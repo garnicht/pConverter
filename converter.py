@@ -38,20 +38,22 @@ artikelliste_df.head()
 # %%
 # remove the redundant NaN rows
 artikelliste_df = artikelliste_df[artikelliste_df["ARTICLE NO."].notna()]
+artikelliste_df.head()
 
 # %%
 # ask for input and insert into df
 artikelnummer = input("Wie lautet die Artikelnummer?:")
 artikelliste_df["PARENT ARTICLE NO."] = artikelnummer
+artikelliste_df.head()
 
 # %%
 # create new csv
 if os.path.exists("finished.csv"):
     print("finished.csv gibt es bereits.")
     dateiname = input("Bitte Tippe einen neuen Namen für die Datei ein (Ohne '.csv'):")
-    artikelliste_df.to_csv(f"{dateiname}.csv")
+    artikelliste_df.to_csv(f"{dateiname}.csv", index=False)
 
 else:
-    artikelliste_df.to_csv("finished.csv")
+    artikelliste_df.to_csv("finished.csv", index=False)
 
 

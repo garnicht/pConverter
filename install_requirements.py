@@ -1,3 +1,3 @@
 import subprocess
 
-subprocess.check_call(["pip", "install", "-r", "requirements.txt"])
+subprocess.check_call(["python3", "-m", "pip", "install", "-r", "requirements.txt"])

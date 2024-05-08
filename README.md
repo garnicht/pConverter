@@ -1,4 +1,5 @@
 # What is this repo about?
+Make pCon csv export usable for weclapp csv import.
 
 # Wie nutze ich diese files? First time installation.
 1. Installiere python für dein Betriebssystem: https://www.python.org/downloads/
@@ -15,6 +16,11 @@
     - wiederhole Punkt 4
 5. Beende das Terminal und starte es neu
 6. converter.py nun ready to use
+
+# Wie funktioniert converter.py? 
+- Converter.py benötigt eine csv mit dem Namen import.csv in der selben directory (Ordner/Folder). 
+- Artikelnummer wird als Input via Terminal erfragt 
+- standard output -> finished.csv. Falls bereits vorhanden, wird um neuen Namen als Input via Terminal gebeten. 
 
 # Wie kann ich eine requirements.txt erstellen? 
 nutze hierfür folgenden Befehl: 

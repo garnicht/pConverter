@@ -12,9 +12,12 @@ except Exception as e:
 artikelliste_df.head()
 
 # %%
-# create / delete  the columns we need / dont need
+# gourp by Bezeichnung aka Artikelnummer to cumulate dublicates and get rid of NaN rows
+artikelliste_df = artikelliste_df.groupby("Bezeichnung")["Menge"].sum().reset_index()
+
+# %%
+# handle the columns we need / don't need
 try: 
-    artikelliste_df.drop(columns="Pos", inplace=True)
     artikelliste_df.insert(0,"Kopfartikelnummer",np.nan)
     artikelliste_df.insert(1,"Parent article name",np.nan)
     artikelliste_df.insert(2,"Parent article description",np.nan)
@@ -24,7 +27,7 @@ try:
 except Exception as e:
     print(e) 
        
-artikelliste_df.head()
+artikelliste_df
 
 # %%
 #change name of existing columns
@@ -36,24 +39,16 @@ except Exception as e:
 artikelliste_df.head()
 
 # %%
-# remove the redundant NaN rows
-artikelliste_df = artikelliste_df[artikelliste_df["Artikelnummer"].notna()]
-artikelliste_df.head()
-
-# %%
 # ask for input and insert into df
 artikelnummer = input("Wie lautet die Kopfartikelnummer?:")
 artikelliste_df["Kopfartikelnummer"] = artikelnummer
-artikelliste_df.head()
+artikelliste_df.head(10)
 
 # %%
-# create new csv
-if os.path.exists("finished.csv"):
-    print("finished.csv gibt es bereits.")
-    dateiname = input("Bitte Tippe einen neuen Namen für die Datei ein (Ohne '.csv'):")
-    artikelliste_df.to_csv(f"{dateiname}.csv", index=False, sep=";")
+artikelnummer_dublicates_df = artikelliste_df[artikelliste_df["Artikelnummer"].duplicated(keep=False)]
+artikelnummer_dublicates_df.head()
 
-else:
-    artikelliste_df.to_csv("finished.csv", index=False, sep=";")
+# %%
+artikelliste_df.to_csv(f"finished_{artikelnummer}.csv", index=False, sep=";")
 
 

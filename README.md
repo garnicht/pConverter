@@ -49,3 +49,7 @@ nutzen wir
 ```
 python3 -m pip install -m requirements.txt
 ```
+improvement ideas: 
+[] name von import.csv to import_[Kopfartikelnummer].csv. [Kopfartikelnummer] = Variable. Um manuelles eintippen von Artikelnumer zu unmgehen
+[] Mit hilfe von weclapp api artikel automatisch erstellen mit all den gewünschten Daten 
+[] mit hilfe von weclapp api und evtl. artikelliste.csv artikelliste hochladen 

@@ -50,6 +50,7 @@ nutzen wir
 python3 -m pip install -m requirements.txt
 ```
 improvement ideas: 
-[] name von import.csv to import_[Kopfartikelnummer].csv. [Kopfartikelnummer] = Variable. Um manuelles eintippen von Artikelnumer zu unmgehen
-[] Mit hilfe von weclapp api artikel automatisch erstellen mit all den gewünschten Daten 
-[] mit hilfe von weclapp api und evtl. artikelliste.csv artikelliste hochladen 
+- [ ] name von import.csv to import_[Kopfartikelnummer].csv. [Kopfartikelnummer] = Variable. Um manuelles eintippen von Artikelnumer zu unmgehen
+- [ ] Mit hilfe von weclapp api artikel automatisch erstellen mit all den gewünschten Daten 
+- [ ] mit hilfe von weclapp api und evtl. artikelliste.csv artikelliste hochladen 
+- [ ] change install_requirements.py to check which platform its executed, then executes different subprocess -> for windows its python -m... not python3 -m...

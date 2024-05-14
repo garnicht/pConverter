@@ -1,6 +1,19 @@
 # What is this repo about?
 Make pCon csv export usable for weclapp csv import.
 
+# Wie nutze ich diese files? First time installation Windows
+1. Installiere python für dein Betriebssystem: https://www.python.org/downloads/
+    - path
+    - path maximum 
+2. Lade den kompletten Ordner von github.com herunter, entpacke ihn und speicher ihn am Ort deiner Wahl
+    - klicke auf den Grünen Button "<> Code"
+    - klicke auf "Download ZIP"
+3. Installiere Microsoft Visual C++ 14.0
+4. Führe install_requirements.py aus (zu finden im heruntergeladenen Ordner)
+5. Beende das Terminal und starte es neu
+6. converter.py nun ready to use, d.h. die Datei kann auch an anderen Ort verschoben werden.
+
+
 # Wie nutze ich diese files? First time installation MAC
 1. Installiere python für dein Betriebssystem: https://www.python.org/downloads/
 2. Lade den kompletten Ordner von github.com herunter, entpacke ihn und speicher ihn am Ort deiner Wahl

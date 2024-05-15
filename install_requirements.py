@@ -6,6 +6,7 @@ if platform.system() == "Darwin":
 
 elif platform.system() == "Windows":
     subprocess.check_call(["python", "-m", "pip", "install", "-r", "requirements.txt"])
+    input("Press enter to finish:")
 
 else: 
     system = platform.system()

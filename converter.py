@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 import pandas as pd
 import numpy as np
 
 
-# In[2]:
+# In[ ]:
 
 
 def detect_encoding(file_path):
@@ -27,7 +27,7 @@ def detect_encoding(file_path):
     raise ValueError("Could not determine the encoding of the CSV file")
 
 
-# In[3]:
+# In[ ]:
 
 
 # transform csv to df
@@ -40,42 +40,42 @@ except Exception as e:
     print(e)
 
 
-# In[4]:
+# In[ ]:
 
 
 # get rid of empty Strings
 artikelliste_df = artikelliste_df.apply(lambda x: x.replace("", None))
 
 
-# In[5]:
+# In[ ]:
 
 
 artikelliste_df = artikelliste_df.query("Pos.notnull()")
 
 
-# In[6]:
+# In[ ]:
 
 
 # gourp by Bezeichnung aka Artikelnummer to cumulate dublicates and get rid of NaN rows
 artikelliste_df = artikelliste_df.groupby("Bezeichnung")["Menge"].sum().reset_index()
 
 
-# In[7]:
+# In[ ]:
 
 
 # handle the columns we need / don't need
 try: 
     artikelliste_df.insert(0,"Kopfartikelnummer",np.nan)
-    artikelliste_df.insert(1,"platzhalter1",np.nan)
-    artikelliste_df.insert(2,"platzhalter2",np.nan)
-    artikelliste_df.insert(3,"platzhalter3",np.nan)
-    artikelliste_df.insert(4,"platzhalter4",np.nan)
-    artikelliste_df.insert(5,"platzhalter5",np.nan)
+    artikelliste_df.insert(1,"Kopfartikelname",np.nan)
+    artikelliste_df.insert(2,"Kopfartikelbeschreibung",np.nan)
+    artikelliste_df.insert(3,"Artikelname",np.nan)
+    artikelliste_df.insert(4,"Artikelbeschreibung	",np.nan)
+    artikelliste_df.insert(5,"Positionsnummer",np.nan)
 except Exception as e:
     print(e)
 
 
-# In[8]:
+# In[ ]:
 
 
 #change name of existing columns
@@ -85,7 +85,7 @@ except Exception as e:
     print(e)
 
 
-# In[9]:
+# In[ ]:
 
 
 # ask for input and insert into df
@@ -93,7 +93,7 @@ artikelnummer = input("Wie lautet die Kopfartikelnummer?:")
 artikelliste_df["Kopfartikelnummer"] = artikelnummer
 
 
-# In[10]:
+# In[ ]:
 
 
 # get rid of dublicates
@@ -101,7 +101,7 @@ if not artikelliste_df[artikelliste_df["Artikelnummer"].duplicated()].empty:
     artikelliste_df = artikelliste_df[artikelliste_df["Artikelnummer"].duplicated(keep=False)]
 
 
-# In[11]:
+# In[ ]:
 
 
 artikelliste_df.to_csv(f"finished_{artikelnummer}.csv", index=False, sep=";", encoding="ISO-8859-1")

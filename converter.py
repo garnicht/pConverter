@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[5]:
 
 
 import pandas as pd
 import numpy as np
+import os
 
 
-# In[ ]:
+# In[6]:
 
 
 def detect_encoding(file_path):
@@ -27,82 +28,49 @@ def detect_encoding(file_path):
     raise ValueError("Could not determine the encoding of the CSV file")
 
 
-# In[ ]:
+# In[7]:
 
 
-# transform csv to df
-
-encoding = detect_encoding("import.csv")
-
-try:
-    artikelliste_df = pd.read_csv("import.csv", sep=";", encoding=encoding)
-except Exception as e:
-    print(e)
-
-
-# In[ ]:
-
-
-# get rid of empty Strings
-artikelliste_df = artikelliste_df.apply(lambda x: x.replace("", None))
+def handle_columns(df):
+    
+    try: 
+        df.insert(0,"Kopfartikelnummer",np.nan)
+        df.insert(1,"Kopfartikelname",np.nan)
+        df.insert(2,"Kopfartikelbeschreibung",np.nan)
+        df.insert(3,"Artikelname",np.nan)
+        df.insert(4,"Artikelbeschreibung",np.nan)
+        df.insert(5,"Positionsnummer",np.nan)
+        df.rename(columns={"Bezeichnung":"Artikelnummer","Menge":"Anzahl"},inplace=True)
+    except Exception as e:
+        print(e)
 
 
-# In[ ]:
+# In[8]:
 
 
-artikelliste_df = artikelliste_df.query("Pos.notnull()")
+# loop through csvs, insert /delete the right columns and insert kopfartikelnummer
 
+for file in os.listdir():
+    if file.endswith(".csv"):
+        
+        kopfartikelnummer = file.split(".")[0]
+        encoding = detect_encoding(file)
+        
+        try:
+            artikelliste_df = pd.read_csv(file, sep=";", encoding=encoding)
+        except Exception as e:
+            print(e)
+        
+        # get rid of empty Strings
+        artikelliste_df = artikelliste_df.apply(lambda x: x.replace("", None))
+        
+        #query and group
+        artikelliste_df.query("Pos.notnull()", inplace=True)
+        artikelliste_df_grouped = artikelliste_df.groupby("Bezeichnung")["Menge"].sum().reset_index()
+        
+        handle_columns(artikelliste_df_grouped)
+        
+        artikelliste_df_grouped["Kopfartikelnummer"] = kopfartikelnummer
 
-# In[ ]:
-
-
-# gourp by Bezeichnung aka Artikelnummer to cumulate dublicates and get rid of NaN rows
-artikelliste_df = artikelliste_df.groupby("Bezeichnung")["Menge"].sum().reset_index()
-
-
-# In[ ]:
-
-
-# handle the columns we need / don't need
-try: 
-    artikelliste_df.insert(0,"Kopfartikelnummer",np.nan)
-    artikelliste_df.insert(1,"Kopfartikelname",np.nan)
-    artikelliste_df.insert(2,"Kopfartikelbeschreibung",np.nan)
-    artikelliste_df.insert(3,"Artikelname",np.nan)
-    artikelliste_df.insert(4,"Artikelbeschreibung	",np.nan)
-    artikelliste_df.insert(5,"Positionsnummer",np.nan)
-except Exception as e:
-    print(e)
-
-
-# In[ ]:
-
-
-#change name of existing columns
-try:
-    artikelliste_df.rename(columns={"Bezeichnung":"Artikelnummer","Menge":"Anzahl"},inplace=True)
-except Exception as e:
-    print(e)
-
-
-# In[ ]:
-
-
-# ask for input and insert into df
-artikelnummer = input("Wie lautet die Kopfartikelnummer?:")
-artikelliste_df["Kopfartikelnummer"] = artikelnummer
-
-
-# In[ ]:
-
-
-# get rid of dublicates
-if not artikelliste_df[artikelliste_df["Artikelnummer"].duplicated()].empty:
-    artikelliste_df = artikelliste_df[artikelliste_df["Artikelnummer"].duplicated(keep=False)]
-
-
-# In[ ]:
-
-
-artikelliste_df.to_csv(f"finished_{artikelnummer}.csv", index=False, sep=";", encoding="ISO-8859-1")
+        artikelliste_df_grouped.to_csv(f"finished_{kopfartikelnummer}.csv", index=False, sep=";", encoding="ISO-8859-1")
 

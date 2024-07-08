@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[ ]:
 
 
 import pandas as pd
@@ -9,7 +9,7 @@ import numpy as np
 import os
 
 
-# In[6]:
+# In[ ]:
 
 
 def detect_encoding(file_path):
@@ -28,7 +28,7 @@ def detect_encoding(file_path):
     raise ValueError("Could not determine the encoding of the CSV file")
 
 
-# In[7]:
+# In[ ]:
 
 
 def handle_columns(df):
@@ -45,7 +45,7 @@ def handle_columns(df):
         print(e)
 
 
-# In[8]:
+# In[ ]:
 
 
 # loop through csvs, insert /delete the right columns and insert kopfartikelnummer
@@ -73,4 +73,10 @@ for file in os.listdir():
         artikelliste_df_grouped["Kopfartikelnummer"] = kopfartikelnummer
 
         artikelliste_df_grouped.to_csv(f"finished_{kopfartikelnummer}.csv", index=False, sep=";", encoding="ISO-8859-1")
+
+
+# In[ ]:
+
+
+input("Press Enter to finish the script")
 

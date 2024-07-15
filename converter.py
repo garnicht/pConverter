@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[61]:
 
 
 import pandas as pd
@@ -9,7 +9,7 @@ import numpy as np
 import os
 
 
-# In[ ]:
+# In[62]:
 
 
 def detect_encoding(file_path):
@@ -28,7 +28,7 @@ def detect_encoding(file_path):
     raise ValueError("Could not determine the encoding of the CSV file")
 
 
-# In[ ]:
+# In[63]:
 
 
 def handle_columns(df):
@@ -45,7 +45,55 @@ def handle_columns(df):
         print(e)
 
 
-# In[ ]:
+# In[64]:
+
+
+def get_grid_type_and_colour(df_grouped):
+    dummy = df_grouped[df_grouped["Artikelnummer"].str.startswith(("G.", "GF"))]
+    
+    typ = dummy.iloc[0]["Artikelnummer"].split(".")[0]
+
+    if dummy.iloc[0]["Artikelnummer"].split(".")[1] == "NB":
+        colour = "NB"
+    elif dummy.iloc[0]["Artikelnummer"].split(".")[1] == "NG":
+        colour = "NG"
+    elif dummy.iloc[0]["Artikelnummer"].split(".")[1] == "NW":
+        colour = "NW"
+    
+    else:
+        print("coudn't recognize colour")
+    
+    return typ,colour
+
+
+# In[65]:
+
+
+def solve_sm4_case():
+    # test SM4
+    if not artikelliste_df_grouped[artikelliste_df_grouped["Artikelnummer"].str.startswith("SM4")].empty:
+        
+        dummy_grouped = artikelliste_df_grouped[artikelliste_df_grouped["Artikelnummer"].str.startswith(("G.", "GF"))]
+
+        # test existing Grids and their colours 
+        if artikelliste_df_grouped[artikelliste_df_grouped["Artikelnummer"].str.startswith(("G.", "GF"))].shape[0] > 1:
+            print("The Cubes in this configuration do have different colours or are mixed with flame retardned and normal. The special case about SM4 cannot be solved now. Be aware.")
+        
+        elif (dummy_grouped["Anzahl"] <=2).any():
+            print("Zu wenige Grids in Liste. SM4 cant be solved. Be aware!")
+        
+        else: 
+
+            # normale Grids minus 2 
+            artikelliste_df_grouped.loc[artikelliste_df_grouped["Artikelnummer"].str.startswith(("G.", "GF")), "Anzahl"] -= 2
+
+            # spezielle Grid + 1 je nach farbe
+            typ, colour = get_grid_type_and_colour(artikelliste_df_grouped)
+            artikelnummer = typ + "." + colour + "_SM4"
+            artikelliste_df_grouped.loc[len(artikelliste_df_grouped)]  = {"Kopfartikelnummer":kopfartikelnummer, "Artikelnummer":artikelnummer , "Anzahl":1}
+
+
+# In[66]:
 
 
 # loop through csvs, insert /delete the right columns and insert kopfartikelnummer
@@ -72,10 +120,17 @@ for file in os.listdir():
         
         artikelliste_df_grouped["Kopfartikelnummer"] = kopfartikelnummer
 
+        try:
+            solve_sm4_case()
+
+        except Exception as e:
+            print(e)
+
+
         artikelliste_df_grouped.to_csv(f"finished_{kopfartikelnummer}.csv", index=False, sep=";", encoding="ISO-8859-1")
 
 
-# In[ ]:
+# In[67]:
 
 
 input("Press Enter to finish the script")

@@ -33,7 +33,7 @@ def create_article(article_number, article_name):
     re = requests.post(url=url,headers=headers,json=content)
 
     if re.status_code == 201:
-        print(f"Artikel mit Artikelnummer {article_number} und Name {article_name} erfolgreich erstellt")
+        print(f"Artikel mit Artikelnummer {article_number} und Artikelname {article_name} erfolgreich erstellt")
     else:
         print(f"Fehler beim Erstellen von Artikel {article_number}")
         print("Status Code:", re.status_code, "Content:", re.content)

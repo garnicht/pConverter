@@ -60,17 +60,3 @@ def create_env(operating_sys):
 if __name__ == "__main__":
     create_env(platform)
     input("Press enter to finish")
-
-# %%
-config_dir = os.path.expanduser("~/.config")
-env_file_path = os.path.join(config_dir, ".env")
-env_file_path
-
-# %%
-from dotenv import load_dotenv
-config_dir = os.path.expanduser("~/.config")
-env_file_path = os.path.join(config_dir, ".env")
-load_dotenv(dotenv_path=env_file_path, override=True)
-os.getenv("weclapp_token")
-
-

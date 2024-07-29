@@ -23,7 +23,8 @@ def create_env(operating_sys):
         elif not os.path.exists(env_file_path):
             ask_for_token(env_file_path)
 
-        ask_for_token(env_file_path)
+        else:
+            ask_for_token(env_file_path)
         
     elif operating_sys == "win32":
         
@@ -37,7 +38,8 @@ def create_env(operating_sys):
         elif not os.path.exists(env_file_path):
             ask_for_token(env_file_path)
         
-        ask_for_token(env_file_path)
+        else:
+            ask_for_token(env_file_path)
 
     else:
         print("Betriebssystem wird nicht unterstützt")

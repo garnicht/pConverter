@@ -1,17 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[61]:
-
-
+# %%
 import pandas as pd
 import numpy as np
 import os
+from weclapp_api import create_article
 
-
-# In[62]:
-
-
+# %%
 def detect_encoding(file_path):
     # Try reading the file with different encodings
     encodings = ['utf-8', 'latin1', 'cp1252', 'windows-1252', 'ISO-8859-1']  # Add more encodings as necessary
@@ -27,10 +20,7 @@ def detect_encoding(file_path):
     # If all encodings fail
     raise ValueError("Could not determine the encoding of the CSV file")
 
-
-# In[63]:
-
-
+# %%
 def handle_columns(df):
     
     try: 
@@ -44,10 +34,7 @@ def handle_columns(df):
     except Exception as e:
         print(e)
 
-
-# In[64]:
-
-
+# %%
 def get_grid_type_and_colour(df_grouped):
     dummy = df_grouped[df_grouped["Artikelnummer"].str.startswith(("G.", "GF"))]
     
@@ -65,10 +52,7 @@ def get_grid_type_and_colour(df_grouped):
     
     return typ,colour
 
-
-# In[65]:
-
-
+# %%
 def solve_sm4_case():
     # test SM4
     if not artikelliste_df_grouped[artikelliste_df_grouped["Artikelnummer"].str.startswith("SM4")].empty:
@@ -92,11 +76,8 @@ def solve_sm4_case():
             artikelnummer = typ + "." + colour + "_SM4"
             artikelliste_df_grouped.loc[len(artikelliste_df_grouped)]  = {"Kopfartikelnummer":kopfartikelnummer, "Artikelnummer":artikelnummer , "Anzahl":1}
 
-
-# In[66]:
-
-
-# loop through csvs, insert /delete the right columns and insert kopfartikelnummer
+# %%
+# create csv for upload
 
 for file in os.listdir():
     if file.endswith(".csv"):
@@ -125,13 +106,19 @@ for file in os.listdir():
 
         except Exception as e:
             print(e)
-
-
+        
+        #create article in weclapp
+        try:
+            article_number = kopfartikelnummer
+            article_name = input(f"Wie lautet der Artikelname von {article_number}:")
+            create_article(kopfartikelnummer,article_name)
+        except Exception as e:
+            print(f"Error with create_article function. Code: {e}")
+        
+        # create finished csvs
         artikelliste_df_grouped.to_csv(f"finished_{kopfartikelnummer}.csv", index=False, sep=";", encoding="ISO-8859-1")
 
-
-# In[67]:
-
-
+# %%
 input("Press Enter to finish the script")
+
 

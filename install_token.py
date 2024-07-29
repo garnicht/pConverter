@@ -27,11 +27,11 @@ def create_env(operating_sys):
         
     elif operating_sys == "win32":
         
-        config_dir = os.path.expanduser("~\\AppData\\Local\\MyApp")
-        env_file_path = os.path.join(config_dir, ".env")
+        myapp_dir = os.path.expanduser("~\\AppData\\Local\\MyApp")
+        env_file_path = os.path.join(myapp_dir, ".env")
 
-        if not os.path.exists(config_dir):
-            os.makedirs(config_dir)
+        if not os.path.exists(myapp_dir):
+            os.makedirs(myapp_dir)
             ask_for_token(env_file_path)
 
         elif not os.path.exists(env_file_path):

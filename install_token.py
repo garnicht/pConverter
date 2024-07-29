@@ -10,6 +10,18 @@ def ask_for_token(path):
         file.write(content)
 
 # %%
+def get_env_path():
+    if platform == "darwin":
+        config_dir = os.path.expanduser("~/.config")
+        env_file_path = os.path.join(config_dir, ".env")
+
+    elif platform == "win32":
+        myapp_dir = os.path.expanduser("~\\AppData\\Local\\MyApp")
+        env_file_path = os.path.join(myapp_dir, ".env")
+
+    return env_file_path
+
+# %%
 def create_env(operating_sys):
     if operating_sys == "darwin":
         
@@ -45,7 +57,20 @@ def create_env(operating_sys):
         print("Betriebssystem wird nicht unterstützt")
 
 # %%
-create_env(platform)
-input("Press enter to finish")
+if __name__ == "__main__":
+    create_env(platform)
+    input("Press enter to finish")
+
+# %%
+config_dir = os.path.expanduser("~/.config")
+env_file_path = os.path.join(config_dir, ".env")
+env_file_path
+
+# %%
+from dotenv import load_dotenv
+config_dir = os.path.expanduser("~/.config")
+env_file_path = os.path.join(config_dir, ".env")
+load_dotenv(dotenv_path=env_file_path, override=True)
+os.getenv("weclapp_token")
 
 

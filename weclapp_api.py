@@ -7,12 +7,13 @@
 import requests
 import os
 from dotenv import load_dotenv
+from install_token import get_env_path
 
 
 # In[ ]:
 
-
-load_dotenv()
+env_file_path = get_env_path()
+load_dotenv(dotenv_path=env_file_path, override=True)
 
 
 # In[ ]:

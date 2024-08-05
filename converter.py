@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 import os
-from weclapp_api import create_article
+from weclapp_api import create_article, get_recent_articles
 
 # %%
 def detect_encoding(file_path):
@@ -101,17 +101,20 @@ for file in os.listdir():
         
         artikelliste_df_grouped["Kopfartikelnummer"] = kopfartikelnummer
 
+        # solve special cases
         try:
             solve_sm4_case()
 
         except Exception as e:
             print(e)
         
-        #create article in weclapp
+        #create article in weclapp and upload Stückliste
         try:
+            artikelliste_df_grouped.rename(inplace=True, columns={"Artikelnummer":"articleNumber", "Anzahl":"quantity"})
+            dics_to_upload = artikelliste_df_grouped[["articleNumber","quantity"]].to_dict(orient="records")
             article_number = kopfartikelnummer
             article_name = input(f"Wie lautet der Artikelname von {article_number}:")
-            create_article(kopfartikelnummer,article_name)
+            create_article(kopfartikelnummer, article_name, dics_to_upload)
         except Exception as e:
             print(f"Error with create_article function. Code: {e}")
         

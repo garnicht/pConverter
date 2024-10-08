@@ -100,7 +100,7 @@ def solve_sm4_case():
             artikelliste_df_grouped.loc[len(artikelliste_df_grouped)]  = {"Kopfartikelnummer":kopfartikelnummer, "Artikelnummer":artikelnummer , "Anzahl":1}
 
 
-# In[6]:
+# In[ ]:
 
 
 # create csv for upload
@@ -125,11 +125,12 @@ for file in os.listdir():
         # handle columns
         artikelliste_df_grouped = handle_columns(artikelliste_df_grouped)
         
-        # handle '0' artikelnummer
-        artikelliste_df_grouped = artikelliste_df_grouped.query("articleNumber != '0'")
+        # handle artikelnummer '0' & 'AP'
+        artikelliste_df_grouped = artikelliste_df_grouped.query("articleNumber != '0' and articleNumber != 'AP' ")
 
         artikelliste_df_grouped["kopfartikelnummer"] = kopfartikelnummer
 
+        print(artikelliste_df_grouped)
         # # solve special cases
         # try:
         #     solve_sm4_case()
@@ -138,13 +139,13 @@ for file in os.listdir():
         #     print(e)
         
         #create article in weclapp and upload Stückliste
-        try:
-            dics_to_upload = artikelliste_df_grouped[["articleNumber","quantity"]].to_dict(orient="records")
-            article_number = kopfartikelnummer
-            article_name = input(f"Wie lautet der Artikelname von {article_number}:")
-            create_article(kopfartikelnummer, article_name, dics_to_upload)
-        except Exception as e:
-            print(f"Error with create_article function. Code: {e}")
+        # try:
+        #     dics_to_upload = artikelliste_df_grouped[["articleNumber","quantity"]].to_dict(orient="records")
+        #     article_number = kopfartikelnummer
+        #     article_name = input(f"Wie lautet der Artikelname von {article_number}:")
+        #     create_article(kopfartikelnummer, article_name, dics_to_upload)
+        # except Exception as e:
+        #     print(f"Error with create_article function. Code: {e}")
         
         # create finished csvs
         artikelliste_df_grouped.to_csv(f"finished_{kopfartikelnummer}.csv", index=False, sep=";", encoding="ISO-8859-1")
@@ -202,7 +203,7 @@ for file in os.listdir():
 #         artikelliste_df_grouped.to_csv(f"{path_to_dir_with_csv}/finished_{kopfartikelnummer}.csv", index=False, sep=";", encoding="ISO-8859-1")
 
 
-# In[8]:
+# In[ ]:
 
 
 input("Press Enter to finish the script")

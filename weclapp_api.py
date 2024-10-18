@@ -30,6 +30,7 @@ def create_article(article_number, article_name, dics_to_upload):
                'billOfMaterialPartDeliveryPossible': True,          # Stücklistenteillieferung möglich
                'useSalesBillOfMaterialItemPrices': False,           # Unterpositionen mit Preisen für Verkauf
                'useSalesBillOfMaterialItemPricesForPurchase': True, # Unterpositionen mit Preisen für Einkauf
+               'useSalesBillOfMaterialSubitemCosts': True,          # Unterpositionen mit Kosten im Verkauf 
                "salesBillOfMaterialItems" : dics_to_upload}         # Verkaufstückliste upload mit den einzelnen Artikeln input = articlename und quantity
     re = requests.post(url=url,headers=headers,json=content)
 
@@ -38,6 +39,7 @@ def create_article(article_number, article_name, dics_to_upload):
     else:
         print(f"Fehler beim Erstellen von Artikel {article_number}")
         print("Status Code:", re.status_code, "Content:", re.content)
+    return re
 
 def get_recent_articles():
     url = "https://degridstudio.weclapp.com/webapp/api/v1/article?sort=-lastModifiedDate"

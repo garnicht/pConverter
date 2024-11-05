@@ -105,7 +105,7 @@ def solve_sm4_case():
             article_number = typ + "." + colour + "_SM4"
             artikelliste_df_grouped.loc[len(artikelliste_df_grouped)+1]  = {"kopfartikelnummer":kopfartikelnummer, "articleNumber":article_number , "quantity":sm4_sum}
 
-            print("Anzahl der SM4 Schränke und prepared Grids:",sm4_sum, "\nAnzahl der reduzierten normalen grids:",minimum_grid)
+            print(f"Anzahl der SM4 Schränke und prepared Grids in {kopfartikelnummer}:",sm4_sum, f"\nAnzahl der reduzierten normalen grids in {kopfartikelnummer}:",minimum_grid)
 
 
 # In[ ]:

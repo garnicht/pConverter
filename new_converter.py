@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 import pandas as pd
@@ -10,7 +10,7 @@ import os
 from weclapp_api import create_article, get_recent_articles
 
 
-# In[2]:
+# In[ ]:
 
 
 def detect_encoding(file_path):
@@ -29,7 +29,7 @@ def detect_encoding(file_path):
     raise ValueError("Could not determine the encoding of the CSV file")
 
 
-# In[3]:
+# In[ ]:
 
 
 def handle_columns(df):
@@ -52,19 +52,19 @@ def handle_columns(df):
         print(e)
 
 
-# In[4]:
+# In[ ]:
 
 
 def get_grid_type_and_colour(df_grouped):
-    dummy = df_grouped[df_grouped["Artikelnummer"].str.startswith(("G.", "GF"))]
+    dummy = df_grouped[df_grouped["articleNumber"].str.startswith(("G.", "GF"))]
     
-    typ = dummy.iloc[0]["Artikelnummer"].split(".")[0]
+    typ = dummy.iloc[0]["articleNumber"].split(".")[0]
 
-    if dummy.iloc[0]["Artikelnummer"].split(".")[1] == "NB":
+    if dummy.iloc[0]["articleNumber"].split(".")[1] == "NB":
         colour = "NB"
-    elif dummy.iloc[0]["Artikelnummer"].split(".")[1] == "NG":
+    elif dummy.iloc[0]["articleNumber"].split(".")[1] == "NG":
         colour = "NG"
-    elif dummy.iloc[0]["Artikelnummer"].split(".")[1] == "NW":
+    elif dummy.iloc[0]["articleNumber"].split(".")[1] == "NW":
         colour = "NW"
     
     else:
@@ -73,34 +73,42 @@ def get_grid_type_and_colour(df_grouped):
     return typ,colour
 
 
-# In[5]:
+# In[ ]:
 
 
 def solve_sm4_case():
     # test SM4
-    if not artikelliste_df_grouped[artikelliste_df_grouped["Artikelnummer"].str.startswith("SM4")].empty:
+    if not artikelliste_df_grouped[artikelliste_df_grouped["articleNumber"].str.startswith("SM4")].empty:
         
-        dummy_grouped = artikelliste_df_grouped[artikelliste_df_grouped["Artikelnummer"].str.startswith(("G.", "GF"))]
+        grids_grouped = artikelliste_df_grouped[artikelliste_df_grouped["articleNumber"].str.startswith(("G.", "GF"))]
+        
+        # calc sm4 sum
+        sm4_filter = artikelliste_df_grouped['articleNumber'].str.startswith('SM4')
+        sm4_quantities = artikelliste_df_grouped.loc[sm4_filter, 'quantity']
+        sm4_sum = sm4_quantities.sum()
+        
+        minimum_grid = sm4_sum * 2
 
         # test existing Grids and their colours 
-        if artikelliste_df_grouped[artikelliste_df_grouped["Artikelnummer"].str.startswith(("G.", "GF"))].shape[0] > 1:
-            print("The Cubes in this configuration do have different colours or are mixed with flame retardned and normal. The special case about SM4 cannot be solved now. Be aware.")
+        if artikelliste_df_grouped[artikelliste_df_grouped["articleNumber"].str.startswith(("G.", "GF"))].shape[0] > 1:
+            print(f"The Cubes in {kopfartikelnummer} configuration do have different colours or are mixed with flame retardned and normal. The special case SM4 is gonna be ignored now. Be aware.")
         
-        elif (dummy_grouped["Anzahl"] <=2).any():
-            print("Zu wenige Grids in Liste. SM4 cant be solved. Be aware!")
+        elif (grids_grouped["quantity"] < minimum_grid).any():                 
+            print(f"Zu wenige Grids in {kopfartikelnummer}. The special case SM4 is gonna be ignored now. Be aware.")
         
-        else: 
-
-            # normale Grids minus 2 
-            artikelliste_df_grouped.loc[artikelliste_df_grouped["Artikelnummer"].str.startswith(("G.", "GF")), "Anzahl"] -= 2
+        else:            
+            # normale Grids minus 2 * sm4 sum
+            artikelliste_df_grouped.loc[artikelliste_df_grouped["articleNumber"].str.startswith(("G.", "GF")), "quantity"] -= (2*sm4_sum)
 
             # spezielle Grid + 1 je nach farbe
             typ, colour = get_grid_type_and_colour(artikelliste_df_grouped)
-            artikelnummer = typ + "." + colour + "_SM4"
-            artikelliste_df_grouped.loc[len(artikelliste_df_grouped)]  = {"Kopfartikelnummer":kopfartikelnummer, "Artikelnummer":artikelnummer , "Anzahl":1}
+            article_number = typ + "." + colour + "_SM4"
+            artikelliste_df_grouped.loc[len(artikelliste_df_grouped)+1]  = {"kopfartikelnummer":kopfartikelnummer, "articleNumber":article_number , "quantity":sm4_sum}
+
+            print("Anzahl der SM4 Schränke und prepared Grids:",sm4_sum, "\nAnzahl der reduzierten normalen grids:",minimum_grid)
 
 
-# In[6]:
+# In[ ]:
 
 
 # create csv for upload
@@ -131,11 +139,11 @@ for file in os.listdir():
         artikelliste_df_grouped["kopfartikelnummer"] = kopfartikelnummer
 
         # # solve special cases
-        # try:
-        #     solve_sm4_case()
+        try:
+            solve_sm4_case()
 
-        # except Exception as e:
-        #     print(e)
+        except Exception as e:
+            print(e)
         
         #create article in weclapp and upload Stückliste
         try:
@@ -146,11 +154,11 @@ for file in os.listdir():
         except Exception as e:
             print(f"Error with create_article function. Code: {e}")
         
-        # create finished csvs
+        # # create finished csvs
         artikelliste_df_grouped.to_csv(f"finished_{kopfartikelnummer}.csv", index=False, sep=";", encoding="ISO-8859-1")
 
 
-# In[7]:
+# In[ ]:
 
 
 # prototyp um converter movable zu machen
@@ -199,6 +207,7 @@ for file in os.listdir():
 #             print(f"Error with create_article function. Code: {e}")
         
 #         # create finished csvs
+
 #         artikelliste_df_grouped.to_csv(f"{path_to_dir_with_csv}/finished_{kopfartikelnummer}.csv", index=False, sep=";", encoding="ISO-8859-1")
 
 

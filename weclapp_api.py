@@ -22,7 +22,8 @@ def create_article(article_number, article_name, dics_to_upload):
     url = "https://degridstudio.weclapp.com/webapp/api/v1/article"
     token = os.getenv("weclapp_token")
     headers = {"AuthenticationToken" : token,
-               "Content-Type" : "application/json"}
+               "Content-Type" : "application/json",
+               "Accept-Encoding" : "gzip"}                          # ab update von 01.02. ist encoding pflicht
     content = {"articleNumber" : article_number,                    # required
                "name" : article_name,                               # required
                "articleCategoryId": "48583",                        # ID-48583 steht für Konfigurationen

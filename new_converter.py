@@ -60,8 +60,8 @@ def get_grid_type_and_colour(df_grouped):
     
     typ = dummy.iloc[0]["articleNumber"].split(".")[0]
 
-    if dummy.iloc[0]["articleNumber"].split(".")[1] == "NB":
-        colour = "NB"
+    if dummy.iloc[0]["articleNumber"].split(".")[1] == "NRB":    # hier zu NRB geändert
+        colour = "NRB"
     elif dummy.iloc[0]["articleNumber"].split(".")[1] == "NG":
         colour = "NG"
     elif dummy.iloc[0]["articleNumber"].split(".")[1] == "NW":
@@ -111,7 +111,7 @@ def solve_sm4_case():
 # In[ ]:
 
 
-# create csv for upload
+# create article in WC and create csv for wizard if needed
 
 for file in os.listdir():
     if file.endswith(".csv"):

@@ -16,7 +16,7 @@ Make pCon csv export usable for weclapp csv import.
     - Installiere
 
 4. Setze Python.exe als defualt/standard für .py Dateien, falls erforderlich.
-        - Rechtsklick auf .py Datei
+        - Rechtsklick auf beliebige .py Datei
         - öffnen mit 
         - andere
         - wählen sie app von pc
@@ -40,21 +40,21 @@ Make pCon csv export usable for weclapp csv import.
 
 3. Setze Python Launcher.app als defualt/standard für .py Dateien.
     - Entweder:
-        - Rechtsklick auf .py Datei
+        - Rechtsklick auf beliebige .py Datei
         - öffnen mit 
         - andere
         - Python 3.12 Ordner öffnen
         - Python Launcher.app auswählen 
         - "Immer öffnen mit" Checkbox anklicken
     - Oder:
-        - wähle eine .py Datei aus
+        - wähle eine beliebige .py Datei aus
         - drücke command + I
         - unter öffnen mit, wähle Python Launcher.app
         - klicke auf Button "Alle ändern..."
 
 4. Führe install_requirements.py aus (zu finden im heruntergeladenen Ordner)
     - ggf. wird um die Installation von dev tools gebeten. -> installieren
-    - wiederhole Punkt 4
+        - wiederhole Punkt 4
 
 5. Beende das Terminal und starte es neu
 

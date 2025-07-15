@@ -2,12 +2,13 @@
 Make pCon csv export usable for weclapp csv import.
 
 # Wie nutze ich diese files? First time installation Windows
-1. Installiere python: https://www.python.org/downloads/:
+1. Installiere python Version 3.12.9: https://www.python.org/downloads/:
     - [x] Use admin privileges... if possible
     - [x] Add python.exe to PATH 
     - [x] remove the MAX_PATH Limitation..., if asked
 
-2. Lade den kompletten Ordner von github.com herunter, entpacke ihn und speicher ihn am Ort deiner Wahl:
+2. Lade den kompletten Ordner von github.com herunter, entpacke ihn und speicher ihn am Ort deiner Wahl: https://github.com/garnicht/pConverter
+
     - klicke auf den Grünen Button "<> Code"
     - klicke auf "Download ZIP"
 
@@ -30,9 +31,10 @@ Make pCon csv export usable for weclapp csv import.
 
 
 # Wie nutze ich diese files? First time installation MAC
-1. Installiere python für dein Betriebssystem: https://www.python.org/downloads/
+1. Installiere python Version 3.12.9 für dein Betriebssystem: https://www.python.org/downloads/
 
-2. Lade den kompletten Ordner von github.com herunter, entpacke ihn und speicher ihn am Ort deiner Wahl
+2. Lade den kompletten Ordner von github.com herunter, entpacke ihn und speicher ihn am Ort deiner Wahl: https://github.com/garnicht/pConverter
+
     - klicke auf den Grünen Button "<> Code"
     - klicke auf "Download ZIP"
 

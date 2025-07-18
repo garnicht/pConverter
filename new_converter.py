@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 import os
 from weclapp_api import create_article, get_recent_articles
+import re
 
 
 # In[ ]:
@@ -105,7 +106,46 @@ def solve_sm4_case():
             article_number = typ + "." + colour + "_SM4"
             artikelliste_df_grouped.loc[len(artikelliste_df_grouped)+1]  = {"kopfartikelnummer":kopfartikelnummer, "articleNumber":article_number , "quantity":sm4_sum}
 
-            print(f"Anzahl der SM4 Schränke und prepared Grids in {kopfartikelnummer}:",sm4_sum, f"\nAnzahl der reduzierten normalen grids in {kopfartikelnummer}:",minimum_grid)
+            print(f"Anzahl der SM4 Schränke und prepared Grids in '{kopfartikelnummer}':",sm4_sum, f"\nAnzahl der reduzierten normalen Grids in '{kopfartikelnummer}':",minimum_grid)
+
+
+# In[ ]:
+
+
+def check_special_colours(df):
+    try:
+        
+        if not df[df["OFML Variant Code"].str.contains("remixcollection|guestcollection|CollectionVeneer|CollectionColor",na=False)].empty:
+            
+            pattern = r'Colors=[a-z]+([0-9]{2,})'
+            mask = df["OFML Variant Code"].str.contains("remixcollection|guestcollection|CollectionVeneer|CollectionColor", na=False)
+
+            for idx, row in df[mask].iterrows():
+                ofml_code = row["OFML Variant Code"]
+                match = re.search(pattern, ofml_code)
+
+                if match:
+                    extracted_value = match.group(1)
+                    df.at[idx,"Article No."] = str(row["Article No."]) + extracted_value
+                    print(f"Reihe {idx} wird zu Sondervariante {df.at[idx,"Article No."]}")
+                    
+                else:
+                    print(f"Index: {idx}, No match found")
+    
+    except Exception as e:
+        print(f"An error occured in function 'check_special_colours()':{e}")
+
+
+# # Script starts here
+
+# In[ ]:
+
+
+## for developing
+#pd.set_option('display.max_columns', None)
+#pd.set_option('display.max_colwidth', None)
+#pd.reset_option('display.max_columns')
+#pd.reset_option('display.max_colwidth')
 
 
 # In[ ]:
@@ -127,6 +167,8 @@ for file in os.listdir():
         # get rid of empty Strings
         artikelliste_df = artikelliste_df.apply(lambda x: x.replace("", None))
         
+        check_special_colours(artikelliste_df)
+
         # query and group
         artikelliste_df_grouped = artikelliste_df.groupby("Article No.")["Quantity"].sum().reset_index()
         

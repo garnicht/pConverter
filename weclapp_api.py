@@ -38,7 +38,7 @@ def create_article(article_number, article_name, dics_to_upload):
     if re.status_code == 201:
         print(f"Artikel mit Artikelnummer {article_number} und Artikelname {article_name} erfolgreich erstellt")
     elif re.json()["error"].startswith("article not found:"): # falls artikel von verkaufstückliste nich in WC (passiert wegen sonderfarben)
-        print("ERROR:", re.json()["error"] , "---> Erstelle den gewünschten individuellen Artikel manuell in WC, ändere die Artikelnummer in csv zu gewünschter individuellen Artikelnummer, lösche die finished_csv und starte den converter von neuem.")
+        print("ERROR:", re.json()["error"] , "---> Erstelle diesen Artikel manuell in WC, lösche die finished_csv und starte den converter von neuem.")
     else:
         print(f"Fehler beim Erstellen von Artikel {article_number}")
         print("Status Code:", re.status_code, "Content:", re.content)

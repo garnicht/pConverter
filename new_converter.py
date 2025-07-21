@@ -126,8 +126,15 @@ def check_special_colours(df):
 
                 if match:
                     extracted_value = match.group(1)
-                    df.at[idx,"Article No."] = str(row["Article No."]) + extracted_value
-                    print(f"Reihe {idx} wird zu Sondervariante {df.at[idx,"Article No."]}")
+                    
+                    # special case because filz / felt does already have a number at the end
+                    if df.at[idx,"Article No."].startswith("PF"):
+                        df.at[idx,"Article No."] = str(row["Article No."]) + "_" + extracted_value
+                        print(f"Reihe {idx} wird zu Sondervariante {df.at[idx,"Article No."]}")
+                         
+                    else:
+                        df.at[idx,"Article No."] = str(row["Article No."]) + extracted_value
+                        print(f"Reihe {idx} wird zu Sondervariante {df.at[idx,"Article No."]}")
                     
                 else:
                     print(f"Index: {idx}, No match found")
